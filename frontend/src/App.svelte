@@ -1,36 +1,29 @@
 <script>
-	// export let name;
-	import axios from 'axios'
-	import { onMount } from 'svelte';
-
-	$: articles = [];
-
-	async function getAPI() {
-		return await axios.get(`http://localhost:8000/articles/`)
-			.then(response => response.data)
-	}
-
-	onMount(async () => {
-		const res = await getAPI();
-		articles = res;
-		console.log(articles);
-	});
+	import { Router, Route, Link } from "svelte-navigator";
+	import List from "./Routes/List.svelte";	
+	import Detail from "./Routes/Detail.svelte"
 
 </script>
 
-<main>
-	<h1>Hello kyuchan!</h1>
-	<h2>Let's start SVELTE!</h2>
-	<ul class="articleList">
-		{#each articles as article}
-			<div class="box">
-				<div>{article.title}</div>
-				<div>{article.content}</div>	
-			</div>
-		{/each}
-	</ul>
-	<!-- <p>{data}</p> -->
-</main>
+<Router>
+	<header>
+		<h1>Go-SVELTE</h1>
+
+		<nav>
+			<Link to="/">Home</Link>
+		</nav>
+	</header>
+
+	<main>
+		<Route path="/">
+			<h3>Article Lists</h3>
+			<List />
+		</Route>
+		<Route path="/:id">
+			<Detail />
+		</Route>
+	</main>
+</Router>
 
 <style>
 	main {
@@ -51,17 +44,6 @@
 		color: orange;
 		font-size: 2rem;
 		font-weight: 100;
-	}
-
-	.box {
-		/* position: relative; */
-		display: inline-block;
-		width: 50%;
-		border: 1px solid #aaa;
-		border-radius: 2px;
-		box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-		padding: 1em;
-		margin: 2rem 0 2em 0;
 	}
 
 	@media (min-width: 640px) {

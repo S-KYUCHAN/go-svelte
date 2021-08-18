@@ -39,6 +39,6 @@
 		border-radius: 2px;
 		box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
 		padding: 1em;
-		margin: 2rem 0 2em 0;
+		margin: 1rem 0 2em 0;
 	}
 </style>

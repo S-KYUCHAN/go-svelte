@@ -29,7 +29,7 @@ func returnAllArticles(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	json.NewEncoder(w).Encode(Articles)
-	
+
 	fmt.Println("Endpoint Hit: returnAllArticles")
 }
 
@@ -48,7 +48,7 @@ func returnSingleArticles(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	json.NewEncoder(w).Encode(Articles)
-	
+
 	fmt.Println("Endpoint Hit: returnSingleArticles")
 }
 
@@ -57,9 +57,25 @@ func createNewArticle(w http.ResponseWriter, r *http.Request) {
 
 	var article Article
 	json.Unmarshal(reqBody, &article)
-	// Articles = append(Articles, article)
 
-	json.NewEncoder(w).Encode(article)
+	query := fmt.Sprintf("insert into articles(title,description,content)values('%s','%s','%s')",
+						article.Title, article.Desc, article.Content)
+
+	result := db.DbExec(query)
+	
+	fmt.Println(result)
+	fmt.Println("Endpoint Hit: createNewArticle")
+}
+
+func deleteArticle(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	key := vars["id"]
+
+	query := fmt.Sprintf("delete from articles where `id`=%s", key)
+
+	result := db.DbExec(query)
+
+	fmt.Println(result)
 }
 
 // func updateArticle(w http.ResponseWriter, r *http.Request) {
@@ -72,17 +88,6 @@ func createNewArticle(w http.ResponseWriter, r *http.Request) {
 // 		}
 // 	}
 // }
-
-func deleteArticle(w http.ResponseWriter, r *http.Request) {
-	// vars := mux.Vars(r)
-	// id := vars["id"]
-
-	// for index, article := range Articles {
-	// 	if article.Id == id {
-	// 		Articles = append(Articles[:index], Articles[index+1:]...)
-	// 	}
-	// }
-}
 
 func welcomePage(w http.ResponseWriter, h *http.Request) {
 	fmt.Fprintf(w, "Welcome to my page")

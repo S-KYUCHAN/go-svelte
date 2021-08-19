@@ -1,6 +1,6 @@
 <script>
     import axios from "axios";
-    import { onMount } from 'svelte';
+    import { useNavigate, useLocation } from "svelte-navigator";
 
     const article = {
         title: "",
@@ -8,11 +8,16 @@
         content: ""
     };
 
+    const navigate = useNavigate();
+    const location = useLocation();
+
     async function postAPI() {
         await axios.post(
             `http://localhost:8000/article`,
             JSON.stringify(article)
         ).then(response => console.log(response));
+        const from = ($location.state && $location.state.from) || "/";
+        navigate(from, { replace: true });
     }
 
     const handleSubmit = () => {

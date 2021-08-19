@@ -3,6 +3,7 @@
 	import List from "./Routes/List.svelte";	
 	import Detail from "./Routes/Detail.svelte"
 	import Create from "./Routes/Create.svelte";
+	import Login from "./Routes/Login.svelte";
 </script>
 
 <Router>
@@ -10,6 +11,7 @@
 		<h1>Go-SVELTE</h1>
 		<nav>
 			<Link to="/">Home</Link>
+			<Link to="/login">Login</Link>
 		</nav>
 	</header>
 
@@ -26,6 +28,9 @@
 		</Route>
 		<Route path="/create">
 			<Create />
+		</Route>
+		<Route path="/login">
+			<Login />
 		</Route>
 	</main>
 </Router>

@@ -27,7 +27,7 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-    <input type="text" placeholder= "Title" bind:value={article.title} />
+    <input type="text" placeholder= "title" bind:value={article.title} />
     <input type="text" placeholder= "Description" bind:value={article.description} />
     <input type="text" placeholder= "Content" bind:value={article.content} />
     <button>Add Article</button>

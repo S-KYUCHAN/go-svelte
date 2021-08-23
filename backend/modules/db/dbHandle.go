@@ -6,14 +6,31 @@ import (
 	"database/sql"
 
 	_ "github.com/go-sql-driver/mysql"
+
+	// "github.com/S-KYUCHAN/backend/models"
 )
 
-func DbQuery(query string) *sql.Rows {
+func InitDB() *sql.DB {
 	dataSource := "kyu:admin@tcp(localhost:3306)/testdb"
 	conn, err := sql.Open("mysql", dataSource)
 	if err != nil {
-		log.Fatal(err)
+		if conn != nil {
+			_ = conn.Close()
+		}
+		panic(err)
 	}
+
+	if err := conn.Ping(); err != nil {
+		panic(err)
+	}
+	
+	return conn
+}
+
+// func DbQuery(conn *sql.DB, query string) *sql.Rows {
+func DbQuery(query string) *sql.Rows {
+
+	conn := InitDB()
 	defer conn.Close()
 
 	rows, err := conn.Query(query)
@@ -24,12 +41,22 @@ func DbQuery(query string) *sql.Rows {
 	return rows
 }
 
-func DbExec(query string) sql.Result {
-	dataSource := "kyu:admin@tcp(localhost:3306)/testdb"
-	conn, err := sql.Open("mysql", dataSource)
+func DbQueryRow(query string, user ...interface{}) {
+	
+	conn := InitDB()
+	defer conn.Close()
+
+	err := conn.QueryRow(query).Scan(user... )
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Endpoint Hit: DbQuery")
+}
+
+// func DbExec(conn *sql.DB, query string) sql.Result {
+func DbExec(query string) sql.Result {
+
+	conn := InitDB()
 	defer conn.Close()
 
 	result, err := conn.Exec(query)
@@ -42,11 +69,8 @@ func DbExec(query string) sql.Result {
 
 
 func DbQueryContext(query string) *sql.Rows {
-	dataSource := "kyu:admin@tcp(localhost:3306)/testdb"
-	conn, err := sql.Open("mysql", dataSource)
-	if err != nil {
-		log.Fatal(err)
-	}
+
+	conn := InitDB()
 	defer conn.Close()
 
 	rows, err := conn.Query(query)
